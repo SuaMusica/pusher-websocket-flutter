@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-import PusherSwift
+import PusherSwiftC
 
 public class SwiftPusherPlugin: NSObject, FlutterPlugin, PusherDelegate {
     
