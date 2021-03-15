@@ -170,8 +170,8 @@ class PusherOptions {
 
 @JsonSerializable()
 class PusherAuth {
-  final String endpoint;
-  final Map<String, String> headers;
+  final String? endpoint;
+  final Map<String, String>? headers;
 
   PusherAuth(
     this.endpoint, {

@@ -22,8 +22,8 @@ Map<String, dynamic> _$InitArgsToJson(InitArgs instance) => <String, dynamic>{
 
 BindArgs _$BindArgsFromJson(Map<String, dynamic> json) {
   return BindArgs(
-    channelName: json['channelName'] as String,
-    eventName: json['eventName'] as String,
+    channelName: json['channelName'] as String?,
+    eventName: json['eventName'] as String?,
   );
 }
 
@@ -34,29 +34,41 @@ Map<String, dynamic> _$BindArgsToJson(BindArgs instance) => <String, dynamic>{
 
 PusherOptions _$PusherOptionsFromJson(Map<String, dynamic> json) {
   return PusherOptions(
-    auth: PusherAuth.fromJson(json['auth'] as Map<String, dynamic>),
-    cluster: json['cluster'] as String,
-    host: json['host'] as String,
+    auth: json['auth'] == null
+        ? null
+        : PusherAuth.fromJson(json['auth'] as Map<String, dynamic>),
+    cluster: json['cluster'] as String?,
+    host: json['host'] as String?,
     port: json['port'] as int,
     encrypted: json['encrypted'] as bool,
     activityTimeout: json['activityTimeout'] as int,
   );
 }
 
-Map<String, dynamic> _$PusherOptionsToJson(PusherOptions instance) =>
-    <String, dynamic>{
-      'auth': instance.auth,
-      'cluster': instance.cluster,
-      'host': instance.host,
-      'port': instance.port,
-      'encrypted': instance.encrypted,
-      'activityTimeout': instance.activityTimeout,
-    };
+Map<String, dynamic> _$PusherOptionsToJson(PusherOptions instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('auth', instance.auth);
+  writeNotNull('cluster', instance.cluster);
+  writeNotNull('host', instance.host);
+  val['port'] = instance.port;
+  val['encrypted'] = instance.encrypted;
+  val['activityTimeout'] = instance.activityTimeout;
+  return val;
+}
 
 PusherAuth _$PusherAuthFromJson(Map<String, dynamic> json) {
   return PusherAuth(
-    json['endpoint'] as String,
-    headers: Map<String, String>.from(json['headers'] as Map),
+    json['endpoint'] as String?,
+    headers: (json['headers'] as Map<String, dynamic>?)?.map(
+      (k, e) => MapEntry(k, e as String),
+    ),
   );
 }
 
@@ -69,8 +81,8 @@ Map<String, dynamic> _$PusherAuthToJson(PusherAuth instance) =>
 ConnectionStateChange _$ConnectionStateChangeFromJson(
     Map<String, dynamic> json) {
   return ConnectionStateChange(
-    currentState: json['currentState'] as String,
-    previousState: json['previousState'] as String,
+    currentState: json['currentState'] as String?,
+    previousState: json['previousState'] as String?,
   );
 }
 
@@ -83,9 +95,9 @@ Map<String, dynamic> _$ConnectionStateChangeToJson(
 
 ConnectionError _$ConnectionErrorFromJson(Map<String, dynamic> json) {
   return ConnectionError(
-    message: json['message'] as String,
-    code: json['code'] as String,
-    exception: json['exception'] as String,
+    message: json['message'] as String?,
+    code: json['code'] as String?,
+    exception: json['exception'] as String?,
   );
 }
 
@@ -113,11 +125,17 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
 PusherEventStreamMessage _$PusherEventStreamMessageFromJson(
     Map<String, dynamic> json) {
   return PusherEventStreamMessage(
-    event: Event.fromJson(json['event'] as Map<String, dynamic>),
-    connectionStateChange: ConnectionStateChange.fromJson(
-        json['connectionStateChange'] as Map<String, dynamic>),
-    connectionError: ConnectionError.fromJson(
-        json['connectionError'] as Map<String, dynamic>),
+    event: json['event'] == null
+        ? null
+        : Event.fromJson(json['event'] as Map<String, dynamic>),
+    connectionStateChange: json['connectionStateChange'] == null
+        ? null
+        : ConnectionStateChange.fromJson(
+            json['connectionStateChange'] as Map<String, dynamic>),
+    connectionError: json['connectionError'] == null
+        ? null
+        : ConnectionError.fromJson(
+            json['connectionError'] as Map<String, dynamic>),
   );
 }
 
